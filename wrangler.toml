@@ -1,28 +1,43 @@
-# wrangler.toml
-# Deploy  : npx wrangler deploy
-# Dev     : npx wrangler dev
-# Secrets : npx wrangler secret put RESEND_API_KEY
+# =============================================================
+#  wrangler.toml — Cloudflare Worker configuration
+#
+#  CARA DEPLOY:
+#  1. npm install
+#  2. npx wrangler login
+#  3. npm run kv:create  → copy id ke bawah
+#  4. Set secrets (lihat komentar di bawah)
+#  5. npm run deploy
+# =============================================================
 
 name               = "fauzan-portfolio-api"
 main               = "src/index.js"
 compatibility_date = "2024-09-23"
-compatibility_flags = ["nodejs_compat"]
 
-# ── KV Namespace untuk rate limiting ─────────────────────────
-# Buat dulu: npx wrangler kv namespace create RATE_LIMIT
-# Lalu copy id-nya ke sini
+# ── KV Namespace (rate limiting) ─────────────────────────────
+# Langkah: npm run kv:create
+# Copy id yang muncul, paste di bawah:
 [[kv_namespaces]]
 binding = "RATE_LIMIT"
-id      = "GANTI_DENGAN_KV_ID_KAMU"
+id      = "d279eec6dcb442efb8413e4a13605f19"
 
-# ── Environment variables (non-secret) ───────────────────────
+# ── Non-secret variables ─────────────────────────────────────
 [vars]
 ENVIRONMENT    = "production"
-ALLOWED_ORIGIN = "https://fauzandwip.pages.dev"
+# Ganti dengan URL Pages kamu setelah deploy frontend
+ALLOWED_ORIGIN = "https://fortofolio-web.mfauzandwiputera10.workers.dev"
 
-# ── Secrets (set via CLI, JANGAN tulis di sini) ───────────────
+# ── Secrets — set via CLI (JANGAN tulis nilainya di sini) ────
 # npx wrangler secret put RESEND_API_KEY
+#   → isi: re_xxxx dari resend.com
+#
 # npx wrangler secret put OWNER_EMAIL
+#   → isi: email kamu (penerima pesan contact form)
+#
 # npx wrangler secret put EMAIL_DOMAIN
+#   → isi: fauzandwip.dev (atau NAMA.pages.dev kalau belum punya domain)
+#
 # npx wrangler secret put IP_SALT
+#   → isi: string random dari https://randomkeygen.com
+#
 # npx wrangler secret put CV_URL
+#   → isi: Google Drive share link CV kamu
